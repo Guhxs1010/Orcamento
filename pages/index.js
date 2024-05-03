@@ -1,15 +1,15 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useFonts } from 'expo-font';   
+import { useFonts } from 'expo-font';
 import * as Animatable from 'react-native-animatable';
 
 export default function Bem_Vindo() {
     const navigation = useNavigation();
     const [fontsLoaded] = useFonts({
-        'Oswald': require('../assets/fonts/Oswald-VariableFont_wght.ttf')
+        'Itim': require('../assets/fonts/Itim-Regular.ttf')
     });
-    
+
     if (!fontsLoaded) {
         return null;
     }
@@ -27,16 +27,13 @@ export default function Bem_Vindo() {
             </View>
             <Animatable.View delay={600} animation='fadeInUp' style={styles.containerForm}>
                 <Text style={styles.title}>
-                    Monitore e organize seus recursos didáticos de qualquer lugar!
-                </Text>
-                <Text style={styles.text}>
-                    Faça o login para começar
+                    Sejam bem-vindos ao aplicativo Orçamento Amigo, sua melhor companhia para as compras
                 </Text>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('entrada')}
                     style={styles.button}>
                     <Text style={styles.buttonText}>
-                        Acessar
+                        Começar
                     </Text>
                 </TouchableOpacity>
             </Animatable.View>
@@ -59,39 +56,38 @@ const styles = StyleSheet.create({
         width: "70%"
     },
     containerForm: {
-        flex: 1,
-        backgroundColor: '#880000',
+        flex: 2.2,
         borderTopLeftRadius: 25,
         borderTopRightRadius: 25,
         paddingStart: '5%',
-        paddingEnd: '5%'
+        paddingEnd: '5%',
     },
     title: {
-        fontFamily: 'Oswald', // Aplica a fonte personalizada
+        position: 'absolute',
+        fontFamily: 'Itim', 
         fontSize: 24,
-        marginTop: 20,
+        marginTop: 10,
         marginBottom: 12,
-        color: "#FFF"
-    },
-    text: {
-        fontFamily: 'Oswald',
-        color: '#a1a1a1'
+        color: "#000",
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
     },
     button: {
         position: 'absolute',
-        backgroundColor: '#FFF',
+        backgroundColor: '#000',
         borderRadius: 50,
         paddingVertical: 8,
         width: '60%',
         alignSelf: 'center',
-        bottom: '15%',
+        bottom: '50%',
         alignItems: 'center',
         justifyContent: 'center',
     },
     buttonText: {
-        fontFamily: 'Oswald',
+        fontFamily: 'Itim',
         fontSize: 18,
-        color: '#880000',
+        color: '#fff',
         fontWeight: 'bold'
     }
 });
