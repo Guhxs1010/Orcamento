@@ -9,8 +9,14 @@ export default function Bem_Vindo() {
     const [fontsLoaded] = useFonts({
         'Itim': require('../assets/fonts/Itim-Regular.ttf')
     });
+    const [fontsLoaded2] = useFonts({
+        'Inter': require('../assets/fonts/Inter.ttf')
+    });
 
     if (!fontsLoaded) {
+        return null;
+    }
+    if (!fontsLoaded2) {
         return null;
     }
 

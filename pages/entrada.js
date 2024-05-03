@@ -14,9 +14,23 @@ import {
 import { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
 
 export default function App() {
 
+    const [fontsLoaded] = useFonts({
+        'Itim': require('../assets/fonts/Itim-Regular.ttf')
+    });
+    const [fontsLoaded2] = useFonts({
+        'Inter': require('../assets/fonts/Inter.ttf')
+    });
+// entrada com borda junta
+    if (!fontsLoaded) {
+        return null;
+    }
+    if (!fontsLoaded2) {
+        return null;
+    }
     const navigation = useNavigation();
 
     const [load, defLoad] = useState(false);
@@ -52,28 +66,34 @@ export default function App() {
             
                 <View style={ESTILOS.form}>
                     <View style={ESTILOS.produtos}>
-                        <Text style={ESTILOS.text}>Produtos</Text>
+                    <View style={ESTILOS.formtext}>
+                        <Text style={ESTILOS.textform}>Produtos</Text>
+                        </View>
                         <TextInput
                             placeholder="Produto 1"
-                            style={ESTILOS.input}
+                            style={ESTILOS.inputform}
                             value={prod1}
                             onChangeText={(texto) => defprod1(texto)}
                         />
                     </View>
                     <View style={ESTILOS.quantidade}>
-                        <Text style={ESTILOS.text}>Quantidade</Text>
+                    <View style={ESTILOS.formtext}>
+                        <Text style={ESTILOS.textform}>Quantidade</Text>
+                        </View>
                         <TextInput
                             placeholder="Quantidade 1"
-                            style={ESTILOS.input}
+                            style={ESTILOS.inputformmeio}
                             value={quant1}
                             onChangeText={(texto) => defquant1(texto)}
                         />
                     </View>
-                    <View style={ESTILOS.quantidade}>
-                        <Text style={ESTILOS.text}>Valor</Text>
+                    <View style={ESTILOS.valor}>
+                    <View style={ESTILOS.formtext}>
+                        <Text style={ESTILOS.textform}>Valor</Text>
+                        </View>
                         <TextInput
-                            placeholder="Quantidade 1"
-                            style={ESTILOS.input}
+                            placeholder="Valor"
+                            style={ESTILOS.inputformesquerda}
                             value={valor1}
                             onChangeText={(texto) => defvalor1(texto)}
                         />
@@ -90,6 +110,22 @@ const ESTILOS = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 20,
     },
+    inputform:{
+        backgroundColor:'#000',
+        height:'14%',
+        borderBottomRightRadius:8,
+        borderTopRightRadius:8,
+    },
+    inputformesquerda:{
+        backgroundColor:'#000',
+        height:'14%',
+        borderBottomLeftRadius:8,
+        borderTopLeftRadius:8,
+    },
+    inputformmeio:{
+        backgroundColor:'#000',
+        height:'14%',
+    },
     textcabe: {
         color: '#fff',
         flex: 1,
@@ -99,10 +135,14 @@ const ESTILOS = StyleSheet.create({
         width: '60%',
         left: 20,
     },
-    text: {
+    textform: {
         color: '#000',
-        fontFamily: 'Itim',
+        fontFamily: 'Inter',
         fontSize: 18,
+        bottom:10,
+    },
+    formtext:{
+        alignItems:'center',
     },
     cabecalho: {
         flex: 1,
@@ -120,13 +160,23 @@ const ESTILOS = StyleSheet.create({
         top: 40,
         left: 20,
     },
+    quantidade:{
+        width: '33%',
+    },
+    valor:{
+        width: '33%',
+    },
+    produtos:{
+        width: '33%',
+    },
     form: {
-        width: '45%',
+        width: '100%',
         borderRadius: 8,
         padding: 16,
         marginTop: 16,
         marginBottom: 8,
         flex: 4,
+        flexDirection:'row-reverse',
     },
     label: {
         fontWeight: 'bold',
