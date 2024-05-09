@@ -11,6 +11,16 @@ const ModalScreen = ({ modalVisible, setModalVisible }) => {
     const [selectedValor, setSelectedValor] = useState("");
     const navigation = useNavigation();
 
+    const handleSave = () => {
+        // Aqui você pode fazer qualquer validação ou manipulação necessária
+        // antes de passar os dados para a próxima tela
+        navigation.navigate('Resultado', {
+            produto: selectedProduto,
+            quantidade: selectedQuantidade,
+            valor: selectedValor
+        });
+        setModalVisible(false);
+    };
     return (
         <Modal
             animationType="slide"
@@ -20,44 +30,44 @@ const ModalScreen = ({ modalVisible, setModalVisible }) => {
                 setModalVisible(!modalVisible);
             }}
         >
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <View style={styles.containerLogo}>
+            <View style={ESTILOS.modalContainer}>
+                <View style={ESTILOS.modalContent}>
+                    <View style={ESTILOS.containerLogo}>
                         <Animatable.Image
                             source={require("../assets/Orcamento.png")}
-                            style={styles.logo}
+                            style={ESTILOS.logo}
                             resizeMode="contain"
                         />
                     </View>
-                    <View style={styles.Titlemodal}>
-                        <Text style={styles.modalTitle}>Insira as Informações</Text>
+                    <View style={ESTILOS.Titlemodal}>
+                        <Text style={ESTILOS.modalTitle}>Insira as Informações</Text>
                     </View>
                     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                        <Ionicons name="close" size={44} color="black" style={styles.buttonclose} />
+                        <Ionicons name="close" size={44} color="black" style={ESTILOS.buttonclose} />
                     </TouchableOpacity>
 
-                    <View style={styles.inputsmodal}>
+                    <View style={ESTILOS.inputsmodal}>
                         <TextInput
-                            style={styles.inputModal}
+                            style={ESTILOS.inputModal}
                             placeholder="Valor R$"
                             onChangeText={(text) => setSelectedValor(text)}
                         />
                         <TextInput
-                            style={styles.inputModal}
+                            style={ESTILOS.inputModal}
                             placeholder="Quantidade"
                             onChangeText={(text) => setSelectedQuantidade(text)}
                         />
                         <TextInput
-                            style={styles.inputModal}
+                            style={ESTILOS.inputModal}
                             placeholder="Produto"
                             onChangeText={(text) => setSelectedProduto(text)}
                         />
                     </View>
                     <TouchableOpacity
-                        style={styles.modalButton}
-                        onPress={() => navigation.navigate('Resultado')}
+                        style={ESTILOS.modalButton}
+                        onPress={handleSave}
                     >
-                        <Text style={styles.modalButtonText}>Salvar</Text>
+                        <Text style={ESTILOS.modalButtonText}>Salvar</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -65,7 +75,7 @@ const ModalScreen = ({ modalVisible, setModalVisible }) => {
     );
 }
 
-const styles = StyleSheet.create({
+const ESTILOS = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f1f1f1',
@@ -107,8 +117,8 @@ const styles = StyleSheet.create({
         height: 90,
         right: 19.8,
     },
-    inputsmodal:{
-        top:20,    
+    inputsmodal: {
+        top: 20,
     },
     modalTitle: {
         fontSize: 20,
@@ -117,7 +127,7 @@ const styles = StyleSheet.create({
     },
     Titlemodal: {
         left: 70,
-        top:35,
+        top: 35,
     },
 
     textcabe: {
@@ -145,9 +155,9 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         width: '100%',
     },
-    buttonclose:{
-        left:240,
-        bottom:50,
+    buttonclose: {
+        left: 240,
+        bottom: 50,
     },
     header: {
         fontSize: 32,
@@ -226,14 +236,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        
+
     },
     modalContent: {
         backgroundColor: '#fff',
         borderRadius: 8,
         padding: 20,
         width: '80%',
-        height:400,
+        height: 400,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -254,11 +264,11 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         padding: 10,
         marginBottom: 10,
-        width:'70%',
+        width: '70%',
         alignItems: 'center',
         justifyContent: 'center',
-        left:40,
-        height:'19%',
+        left: 40,
+        height: '19%',
         backgroundColor: '#D9D9D9',
     },
     modalButton: {
@@ -267,9 +277,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        width:'50%',
-        left:65,
-        bottom:30,
+        width: '50%',
+        left: 65,
+        bottom: 30,
     },
     modalButtonText: {
         color: '#fff',
@@ -278,8 +288,8 @@ const styles = StyleSheet.create({
     },
     logo: {
         width: "30%",
-        bottom:490,
-        right:10,
+        bottom: 490,
+        right: 10,
     },
 });
 

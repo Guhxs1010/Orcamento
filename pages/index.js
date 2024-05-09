@@ -21,24 +21,24 @@ export default function Bem_Vindo() {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.containerLogo}>
+        <View style={ESTILOS.container}>
+            <View style={ESTILOS.containerLogo}>
                 <Animatable.Image
                     delay={1000}
                     animation="flipInY"
                     source={require("../assets/Orcamento.png")}
-                    style={styles.logo}
+                    style={ESTILOS.logo}
                     resizeMode="contain"
                 />
             </View>
-            <Animatable.View delay={600} animation='fadeInUp' style={styles.containerForm}>
-                <Text style={styles.title}>
+            <Animatable.View delay={600} animation='fadeInUp' style={ESTILOS.containerForm}>
+                <Text style={ESTILOS.title}>
                     Sejam bem-vindos ao aplicativo Orçamento Amigo, sua melhor companhia para as compras
                 </Text>
                 <TouchableOpacity
                     onPress={() => navigation.navigate('entrada')}
-                    style={styles.button}>
-                    <Text style={styles.buttonText}>
+                    style={ESTILOS.button}>
+                    <Text style={ESTILOS.buttonText}>
                         Começar
                     </Text>
                 </TouchableOpacity>
@@ -47,7 +47,7 @@ export default function Bem_Vindo() {
     );
 }
 
-const styles = StyleSheet.create({
+const ESTILOS = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#FFF'

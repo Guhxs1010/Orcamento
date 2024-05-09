@@ -15,9 +15,16 @@ import { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { useRoute } from '@react-navigation/native';
+
 
 export default function App() {
-
+    
+        const route = useRoute();
+        const { produto, quantidade, valor } = route.params;
+    
+       
+    
     const [fontsLoaded] = useFonts({
         'Itim': require('../assets/fonts/Itim-Regular.ttf')
     });
@@ -69,34 +76,19 @@ export default function App() {
                     <View style={ESTILOS.formtext}>
                         <Text style={ESTILOS.textform}>Produtos</Text>
                         </View>
-                        <TextInput
-                            placeholder="Produto 1"
-                            style={ESTILOS.inputform}
-                            value={prod1}
-                            onChangeText={(texto) => defprod1(texto)}
-                        />
+                        <Text style={ESTILOS.inputform}>{produto}</Text>
                     </View>
                     <View style={ESTILOS.quantidade}>
                     <View style={ESTILOS.formtext}>
                         <Text style={ESTILOS.textform}>Quantidade</Text>
                         </View>
-                        <TextInput
-                            placeholder="Quantidade 1"
-                            style={ESTILOS.inputformmeio}
-                            value={quant1}
-                            onChangeText={(texto) => defquant1(texto)}
-                        />
+                        <Text style={ESTILOS.inputformmeio}>{quantidade}</Text>
                     </View>
                     <View style={ESTILOS.valor}>
                     <View style={ESTILOS.formtext}>
                         <Text style={ESTILOS.textform}>Valor</Text>
                         </View>
-                        <TextInput
-                            placeholder="Valor"
-                            style={ESTILOS.inputformesquerda}
-                            value={valor1}
-                            onChangeText={(texto) => defvalor1(texto)}
-                        />
+                        <Text style={ESTILOS.inputformesquerda}>{valor}</Text>
                     </View>
                 </View>
         </View>
@@ -115,16 +107,19 @@ const ESTILOS = StyleSheet.create({
         height:'14%',
         borderBottomRightRadius:8,
         borderTopRightRadius:8,
+        color:'#fff',
     },
     inputformesquerda:{
         backgroundColor:'#000',
         height:'14%',
         borderBottomLeftRadius:8,
         borderTopLeftRadius:8,
+        color:'#fff',
     },
     inputformmeio:{
         backgroundColor:'#000',
         height:'14%',
+        color:'#fff',
     },
     textcabe: {
         color: '#fff',
