@@ -1,39 +1,69 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, Modal, TextInput, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as Animatable from 'react-native-animatable';
+import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ModalScreen from '../pages/Modalscreen';
 
-export default function App() {
+const ModalScreen = ({ modalVisible, setModalVisible }) => {
+    const [selectedProduto, setSelectedProduto] = useState("");
+    const [selectedQuantidade, setSelectedQuantidade] = useState("");
+    const [selectedValor, setSelectedValor] = useState("");
     const navigation = useNavigation();
-    const [modalVisible, setModalVisible] = useState(false);
 
     return (
-        <View style={styles.container}>
-            <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#F1F1F1" />
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+                setModalVisible(!modalVisible);
+            }}
+        >
+            <View style={styles.modalContainer}>
+                <View style={styles.modalContent}>
+                    <View style={styles.containerLogo}>
+                        <Animatable.Image
+                            source={require("../assets/Orcamento.png")}
+                            style={styles.logo}
+                            resizeMode="contain"
+                        />
+                    </View>
+                    <View style={styles.Titlemodal}>
+                        <Text style={styles.modalTitle}>Insira as Informações</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                        <Ionicons name="close" size={44} color="black" style={styles.buttonclose} />
+                    </TouchableOpacity>
 
-            <View style={styles.cabecalho}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.buttonback}>
-                    <Ionicons name="chevron-back-outline" size={44} color="white" />
-                </TouchableOpacity>
-                <Text style={styles.textcabe}>Insira os valores, os produtos e quantidade</Text>
-            </View>
-
-            <View style={styles.form}>
-                <View style={styles.produtos}>
-                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.buttonadd2}>
-                        <Ionicons name="add-outline" size={44} color="black" style={styles.buttonadd} />
+                    <View style={styles.inputsmodal}>
+                        <TextInput
+                            style={styles.inputModal}
+                            placeholder="Valor R$"
+                            onChangeText={(text) => setSelectedValor(text)}
+                        />
+                        <TextInput
+                            style={styles.inputModal}
+                            placeholder="Quantidade"
+                            onChangeText={(text) => setSelectedQuantidade(text)}
+                        />
+                        <TextInput
+                            style={styles.inputModal}
+                            placeholder="Produto"
+                            onChangeText={(text) => setSelectedProduto(text)}
+                        />
+                    </View>
+                    <TouchableOpacity
+                        style={styles.modalButton}
+                        onPress={() => navigation.navigate('Resultado')}
+                    >
+                        <Text style={styles.modalButtonText}>Salvar</Text>
                     </TouchableOpacity>
                 </View>
-                {/* Rest of your form */}
             </View>
-
-            <ModalScreen modalVisible={modalVisible} setModalVisible={setModalVisible} />
-            
-        </View>
+        </Modal>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
@@ -53,11 +83,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     produtosform: {
-        backgroundColor: '#D9D9D9',
-        height: '14%',
-        borderRadius: 8,
-    },
-    buttonadd2: {
         backgroundColor: '#D9D9D9',
         height: '14%',
         borderRadius: 8,
@@ -82,8 +107,8 @@ const styles = StyleSheet.create({
         height: 90,
         right: 19.8,
     },
-    inputsmodal: {
-        top: 10,
+    inputsmodal:{
+        top:20,    
     },
     modalTitle: {
         fontSize: 20,
@@ -91,8 +116,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
     },
     Titlemodal: {
-        left: 55,
-        top: 15,
+        left: 70,
+        top:35,
     },
 
     textcabe: {
@@ -120,9 +145,9 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         width: '100%',
     },
-    buttonclose: {
-        left: 240,
-        bottom: 50,
+    buttonclose:{
+        left:240,
+        bottom:50,
     },
     header: {
         fontSize: 32,
@@ -201,14 +226,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
+        
     },
     modalContent: {
         backgroundColor: '#fff',
         borderRadius: 8,
         padding: 20,
         width: '80%',
-        height: 400,
+        height:400,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -229,11 +254,11 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         padding: 10,
         marginBottom: 10,
-        width: '70%',
+        width:'70%',
         alignItems: 'center',
         justifyContent: 'center',
-        left: 40,
-        height: '19%',
+        left:40,
+        height:'19%',
         backgroundColor: '#D9D9D9',
     },
     modalButton: {
@@ -242,13 +267,20 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        width: '50%',
-        left: 65,
-        bottom: 30,
+        width:'50%',
+        left:65,
+        bottom:30,
     },
     modalButtonText: {
         color: '#fff',
         fontSize: 16,
         fontWeight: 'bold',
     },
+    logo: {
+        width: "30%",
+        bottom:490,
+        right:10,
+    },
 });
+
+export default ModalScreen;
