@@ -9,20 +9,20 @@ export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
 
     return (
-        <View style={styles.container}>
+        <View style={ESTILOS.container}>
             <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#F1F1F1" />
 
-            <View style={styles.cabecalho}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.buttonback}>
+            <View style={ESTILOS.cabecalho}>
+                <TouchableOpacity onPress={() => navigation.goBack()} style={ESTILOS.buttonback}>
                     <Ionicons name="chevron-back-outline" size={44} color="white" />
                 </TouchableOpacity>
-                <Text style={styles.textcabe}>Insira os valores, os produtos e quantidade</Text>
+                <Text style={ESTILOS.textcabe}>Insira os valores, os produtos e quantidade</Text>
             </View>
 
-            <View style={styles.form}>
-                <View style={styles.produtos}>
-                    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.buttonadd2}>
-                        <Ionicons name="add-outline" size={44} color="black" style={styles.buttonadd} />
+            <View style={ESTILOS.form}>
+                <View style={ESTILOS.produtos}>
+                    <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
+                        <Ionicons name="add-outline" size={44} color="black" style={ESTILOS.buttonadd} />
                     </TouchableOpacity>
                 </View>
                 {/* Rest of your form */}
@@ -35,7 +35,7 @@ export default function App() {
 }
 
 
-const styles = StyleSheet.create({
+const ESTILOS = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f1f1f1',
