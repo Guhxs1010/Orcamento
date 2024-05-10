@@ -18,7 +18,7 @@ import { useFonts } from 'expo-font';
 import { useRoute } from '@react-navigation/native';
 
 
-export default function App() {
+export default function Resultado() {
     
         const route = useRoute();
         const { produto, quantidade, valor } = route.params;
@@ -58,10 +58,11 @@ export default function App() {
     const [quant3, defquant3] = useState("");
     const [quant4, defquant4] = useState("");
 
-
+x
     return (
         <View style={ESTILOS.container}>
             <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#F1F1F1" />
+
 
             <View style={ESTILOS.cabecalho}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={ESTILOS.buttonback}>

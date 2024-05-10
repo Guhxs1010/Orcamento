@@ -5,22 +5,19 @@ import * as Animatable from 'react-native-animatable';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const ModalScreen = ({ modalVisible, setModalVisible }) => {
+const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => {
     const [selectedProduto, setSelectedProduto] = useState("");
     const [selectedQuantidade, setSelectedQuantidade] = useState("");
     const [selectedValor, setSelectedValor] = useState("");
     const navigation = useNavigation();
 
     const handleSave = () => {
-        // Aqui você pode fazer qualquer validação ou manipulação necessária
-        // antes de passar os dados para a próxima tela
-        navigation.navigate('Resultado', {
-            produto: selectedProduto,
-            quantidade: selectedQuantidade,
-            valor: selectedValor
-        });
+        // Chama a função handleAddDataToList passando os dados inseridos
+        handleAddDataToList(selectedProduto, selectedQuantidade, selectedValor);
+        // Fecha o modal
         setModalVisible(false);
     };
+
     return (
         <Modal
             animationType="slide"
@@ -65,7 +62,7 @@ const ModalScreen = ({ modalVisible, setModalVisible }) => {
                     </View>
                     <TouchableOpacity
                         style={ESTILOS.modalButton}
-                        onPress={handleSave}
+                        onPress={handleSave} // Chama a função handleSave ao pressionar o botão "Salvar"
                     >
                         <Text style={ESTILOS.modalButtonText}>Salvar</Text>
                     </TouchableOpacity>
