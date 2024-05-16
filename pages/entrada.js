@@ -36,36 +36,43 @@ export default function App() {
                     <Text style={ESTILOS.textform}>Valor</Text>
                 </View>
             </View>
-            
+
             <FlatList
                 data={dataList}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
-                    <View style={ESTILOS.formflat}>
-                        <View style={ESTILOS.produtos}>
+                    <View style={ESTILOS.flat}>
+                        <View style={ESTILOS.formflat}>
+                            <View style={ESTILOS.produtos}>
 
-                            <Text style={ESTILOS.inputform}>{item.produto}</Text>
-                        </View>
+                                <Text style={ESTILOS.inputform}>{item.produto}</Text>
+                            </View>
 
-                        <View style={ESTILOS.quantidade}>
+                            <View style={ESTILOS.quantidade}>
 
-                            <Text style={ESTILOS.inputformmeio}>{item.quantidade}</Text>
-                        </View>
+                                <Text style={ESTILOS.inputformmeio}>{item.quantidade}</Text>
+                            </View>
 
-                        <View style={ESTILOS.valor}>
+                            <View style={ESTILOS.valor}>
 
-                            <Text style={ESTILOS.inputformesquerda}>{item.valor}</Text>
+                                <Text style={ESTILOS.inputformesquerda}>{item.valor}</Text>
+                            </View>
                         </View>
                     </View>
                 )}
             />
 
+    
             <View style={ESTILOS.form}>
-                <View style={ESTILOS.produtos}>
+                <View style={ESTILOS.caixabotao}>
 
-                    <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
-                        <Ionicons name="add-outline" size={44} color="black" style={ESTILOS.buttonadd} />
-                    </TouchableOpacity>
+                    <View style={ESTILOS.botaoadd}>
+
+                        <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
+                            <Ionicons name="add-outline" size={44} color="black" style={ESTILOS.buttonadd} />
+                        </TouchableOpacity>
+
+                    </View>
 
                 </View>
                 {/* Restante do seu formulário */}
@@ -73,7 +80,9 @@ export default function App() {
 
             {/* Modal */}
             <ModalScreen modalVisible={modalVisible} setModalVisible={setModalVisible} handleAddDataToList={handleAddDataToList} />
+           
         </View>
+        
     );
 }
 
@@ -84,9 +93,17 @@ const ESTILOS = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 20,
     },
+    caixabotao: {
+        width: '100%',
+        height: 200,
+
+        borderRadius: 60,
+        paddingVertical: 8,
+    },
     buttonadd: {
-        left: 40,
+        left: 15,
         top: 10,
+
     },
     produtosform: {
         backgroundColor: '#D9D9D9',
@@ -99,12 +116,16 @@ const ESTILOS = StyleSheet.create({
         borderBottomRightRadius: 8,
         borderTopRightRadius: 8,
         color: '#fff',
+        alignItems: 'center',
     },
     buttonadd2: {
         backgroundColor: '#D9D9D9',
+        width: '55%',
         height: '14%',
-        borderRadius: 8,
-        bottom: 120,
+
+        borderRadius: 100,
+        top: 20,
+        left: 150,
     },
     inputformesquerda: {
         backgroundColor: '#000',
@@ -155,11 +176,11 @@ const ESTILOS = StyleSheet.create({
         fontFamily: 'Inter',
         fontSize: 18,
         bottom: 10,
-        margin:20,
+        margin: 20,
     },
     formcontainer: {
         top: 10,
-        flexDirection:'row',
+        flexDirection: 'row',
     },
     cabecalho: {
         backgroundColor: '#000',
@@ -196,8 +217,11 @@ const ESTILOS = StyleSheet.create({
         padding: 16,
         marginTop: 16,
         marginBottom: 8,
-        flex: 4,
+        backgroundColor: '#000',
+        height: 230,
         flexDirection: 'row-reverse',
+        borderRadius: 50,
+        top: 60,
     },
     label: {
         fontWeight: 'bold',
@@ -257,12 +281,14 @@ const ESTILOS = StyleSheet.create({
         width: '33%',
         height: 500,
     },
+    botaoadd: {
+        width: '33%',
+        height: 500,
+    },
     formflat: {
         width: '100%',
         borderRadius: 8,
         padding: 16,
-        marginTop: 16,
-        marginBottom: 8,
         flexDirection: 'row-reverse',
         height: 90,
     },
