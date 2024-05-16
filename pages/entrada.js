@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList, ScrollView, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import ModalScreen from '../pages/Modalscreen';
@@ -14,9 +14,17 @@ export default function App() {
         setDataList([...dataList, { produto, quantidade, valor }]);
     };
 
+    // Função para remover um item da lista
+    const handleRemoveItem = (index) => {
+        const updatedList = [...dataList];
+        updatedList.splice(index, 1); // Remove o item do array
+        setDataList(updatedList); // Atualiza a lista
+    };
+
     return (
+
         <View style={ESTILOS.container}>
-            <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#F1F1F1" />
+            <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#fff" />
 
             <View style={ESTILOS.cabecalho}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={ESTILOS.buttonback}>
@@ -27,83 +35,113 @@ export default function App() {
 
             <View style={ESTILOS.formcontainer}>
                 <View style={ESTILOS.formtext}>
-                    <Text style={ESTILOS.textform}>Produtos</Text>
+                    <Text style={ESTILOS.textform}>Valor</Text>
                 </View>
                 <View style={ESTILOS.formtext}>
                     <Text style={ESTILOS.textform}>Quantidade</Text>
                 </View>
                 <View style={ESTILOS.formtext}>
-                    <Text style={ESTILOS.textform}>Valor</Text>
+                    <Text style={ESTILOS.textform}>Produto</Text>
                 </View>
             </View>
 
-            <FlatList
-                data={dataList}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <View style={ESTILOS.flat}>
-                        <View style={ESTILOS.formflat}>
-                            <View style={ESTILOS.produtos}>
+            <View style={ESTILOS.FlatList}>
+                <FlatList
+                    data={dataList}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                        <View style={ESTILOS.flat}>
+                            <View style={ESTILOS.formflat}>
+                                <View style={ESTILOS.produtos}>
+                                    <View style={ESTILOS.inputform}>
+                                        <Text style={ESTILOS.textoprod}>{item.produto}</Text>
+                                    </View>
+                                </View>
 
-                                <Text style={ESTILOS.inputform}>{item.produto}</Text>
-                            </View>
+                                <View style={ESTILOS.quantidade}>
+                                    <View style={ESTILOS.inputformmeio}>
+                                        <Text style={ESTILOS.texto}>{item.quantidade}</Text>
+                                    </View>
+                                </View>
 
-                            <View style={ESTILOS.quantidade}>
-
-                                <Text style={ESTILOS.inputformmeio}>{item.quantidade}</Text>
-                            </View>
-
-                            <View style={ESTILOS.valor}>
-
-                                <Text style={ESTILOS.inputformesquerda}>{item.valor}</Text>
+                                <View style={ESTILOS.valor}>
+                                    <View style={ESTILOS.inputformesquerda}>
+                                        <Text style={ESTILOS.texto}>{item.valor}</Text>
+                                        <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
+                                            <Ionicons name="trash-sharp" size={27} color="#06C167" />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
                             </View>
                         </View>
-                    </View>
-                )}
-            />
-
-    
-            <View style={ESTILOS.form}>
-                <View style={ESTILOS.caixabotao}>
-
-                    <View style={ESTILOS.botaoadd}>
-
-                        <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
-                            <Ionicons name="add-outline" size={44} color="black" style={ESTILOS.buttonadd} />
-                        </TouchableOpacity>
-
-                    </View>
-
-                </View>
-                {/* Restante do seu formulário */}
+                    )}
+                />
             </View>
+
+            <ImageBackground
+                source={require('../assets/fundo.png')}
+                style={ESTILOS.formBackground}
+            >
+                <View style={ESTILOS.form}>
+                    <View style={ESTILOS.caixabotao}>
+                        <View style={ESTILOS.botaoadd}>
+                            <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
+                                <Ionicons name="add-outline" size={44} color="#fff" style={ESTILOS.buttonadd} />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View style={ESTILOS.finalizar}>
+
+                        <View style={ESTILOS.textoform90}>
+                            <Text style={ESTILOS.formtexto}>Valor Total: R$ {/* valor total item*/}</Text>
+                        </View>
+
+                        <View style={ESTILOS.finalizarbotao}>
+                            <Text style={ESTILOS.botaofinalizar}>Finalizar</Text>
+                        </View>
+
+                    </View>
+                </View>
+            </ImageBackground>
 
             {/* Modal */}
             <ModalScreen modalVisible={modalVisible} setModalVisible={setModalVisible} handleAddDataToList={handleAddDataToList} />
-           
         </View>
-        
     );
 }
 
 const ESTILOS = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#f1f1f1',
+        flex: 8,
         alignItems: 'center',
         paddingTop: 20,
     },
+    texto: {
+        top: 20,
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'white',
+    },
+    textoprod: {
+        top: 20,
+        fontSize: 18,
+        right: 22,
+        color: 'white',
+    },
+    FlatList: {
+        flex: 4,
+    },
     caixabotao: {
+        alignItems:'center',
         width: '100%',
         height: 200,
-
         borderRadius: 60,
         paddingVertical: 8,
     },
-    buttonadd: {
-        left: 15,
-        top: 10,
-
+    buttonremove: {
+        left: 325,
+        bottom: 6,
     },
     produtosform: {
         backgroundColor: '#D9D9D9',
@@ -111,7 +149,7 @@ const ESTILOS = StyleSheet.create({
         borderRadius: 8,
     },
     inputform: {
-        backgroundColor: '#000',
+        backgroundColor: '#152128',
         height: '14%',
         borderBottomRightRadius: 8,
         borderTopRightRadius: 8,
@@ -119,23 +157,25 @@ const ESTILOS = StyleSheet.create({
         alignItems: 'center',
     },
     buttonadd2: {
-        backgroundColor: '#D9D9D9',
-        width: '55%',
-        height: '14%',
-
-        borderRadius: 100,
-        top: 20,
-        left: 150,
+        backgroundColor: '#06C167',
+        width: '50%',
+        height: 80,
+        borderRadius: 50, 
+        alignItems: 'center',
+        textAlign:'center',
+        justifyContent:'center',
+        bottom: 130,
+        left:40,
     },
     inputformesquerda: {
-        backgroundColor: '#000',
+        backgroundColor: '#152128',
         color: '#fff',
         height: '14%',
         borderBottomLeftRadius: 8,
         borderTopLeftRadius: 8,
     },
     inputformmeio: {
-        backgroundColor: '#000',
+        backgroundColor: '#152128',
         height: '14%',
         color: '#fff',
     },
@@ -175,19 +215,19 @@ const ESTILOS = StyleSheet.create({
         color: '#000',
         fontFamily: 'Inter',
         fontSize: 18,
-        bottom: 10,
         margin: 20,
     },
     formcontainer: {
+        flex: 1,
         top: 10,
         flexDirection: 'row',
     },
     cabecalho: {
-        backgroundColor: '#000',
+        flex: 1.2,
+        backgroundColor: '#152128',
         alignItems: 'center',
         paddingTop: 20,
         width: '100%',
-        height: 120,
     },
     buttonclose: {
         left: 240,
@@ -212,16 +252,12 @@ const ESTILOS = StyleSheet.create({
         width: '33%',
     },
     form: {
-        width: '100%',
-        borderRadius: 8,
+        flex: 0.2,
         padding: 16,
         marginTop: 16,
         marginBottom: 8,
-        backgroundColor: '#000',
-        height: 230,
         flexDirection: 'row-reverse',
-        borderRadius: 50,
-        top: 60,
+        top: 55,
     },
     label: {
         fontWeight: 'bold',
@@ -271,7 +307,6 @@ const ESTILOS = StyleSheet.create({
     quantidade: {
         width: '33%',
         height: 500,
-
     },
     valor: {
         width: '33%',

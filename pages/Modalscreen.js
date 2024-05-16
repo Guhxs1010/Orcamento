@@ -29,35 +29,42 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
         >
             <View style={ESTILOS.modalContainer}>
                 <View style={ESTILOS.modalContent}>
-                    <View style={ESTILOS.containerLogo}>
-                        <Animatable.Image
-                            source={require("../assets/Orcamento.png")}
-                            style={ESTILOS.logo}
-                            resizeMode="contain"
-                        />
-                    </View>
                     <View style={ESTILOS.Titlemodal}>
-                        <Text style={ESTILOS.modalTitle}>Insira as Informações</Text>
+                        <Text style={[ESTILOS.modalTitle, { color: '#fff' }]}>Insira as Informações</Text>
                     </View>
                     <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
-                        <Ionicons name="close" size={44} color="black" style={ESTILOS.buttonclose} />
+                        <Ionicons name="close" size={44} color="white" style={ESTILOS.buttonclose} />
                     </TouchableOpacity>
 
                     <View style={ESTILOS.inputsmodal}>
                         <TextInput
                             style={ESTILOS.inputModal}
                             placeholder="Valor R$"
-                            onChangeText={(text) => setSelectedValor(text)}
+                            onChangeText={(text) => {
+                                const formattedText = text.replace(/[^0-9]/g, '');//para não aceitar letras
+                                setSelectedValor(formattedText);
+                            }}
+                            value={selectedValor}
                         />
                         <TextInput
                             style={ESTILOS.inputModal}
                             placeholder="Quantidade"
-                            onChangeText={(text) => setSelectedQuantidade(text)}
+                            onChangeText={(text) => {
+                                const formattedText = text.replace(/[^0-9]/g, '');//para não aceitar letras
+                                setSelectedQuantidade(formattedText);
+                            }}
+                            value={selectedQuantidade}
                         />
                         <TextInput
                             style={ESTILOS.inputModal}
                             placeholder="Produto"
-                            onChangeText={(text) => setSelectedProduto(text)}
+                            onChangeText={(text) => {
+                                const formattedText = text.replace(/[^a-zA-Z]/g, ''); // Aceita apenas letras
+                                const limitedText = formattedText.slice(0, 9); // Limita o número de caracteres
+                                setSelectedProduto(limitedText);
+                            }}
+                            value={selectedProduto}
+                            maxLength={9} // Limita o número máximo de caracteres
                         />
                     </View>
                     <TouchableOpacity
@@ -121,10 +128,13 @@ const ESTILOS = StyleSheet.create({
         fontSize: 20,
         fontWeight: 'bold',
         marginLeft: 10,
+        color: '#fff'
     },
     Titlemodal: {
-        left: 70,
+        textAlign: 'center',
+        alignItems: 'center',
         top: 35,
+        color: '#fff'
     },
 
     textcabe: {
@@ -137,7 +147,7 @@ const ESTILOS = StyleSheet.create({
         left: 20,
     },
     textform: {
-        color: '#000',
+        color: '#fff',
         fontFamily: 'Inter',
         fontSize: 18,
         bottom: 10,
@@ -236,7 +246,7 @@ const ESTILOS = StyleSheet.create({
 
     },
     modalContent: {
-        backgroundColor: '#fff',
+        backgroundColor: '#152128',
         borderRadius: 8,
         padding: 20,
         width: '80%',
@@ -269,7 +279,7 @@ const ESTILOS = StyleSheet.create({
         backgroundColor: '#D9D9D9',
     },
     modalButton: {
-        backgroundColor: '#000',
+        backgroundColor: '#06C167',
         padding: 12,
         borderRadius: 8,
         alignItems: 'center',
