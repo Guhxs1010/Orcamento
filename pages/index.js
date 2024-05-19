@@ -5,10 +5,11 @@ import { useFonts } from 'expo-font';
 import * as Animatable from 'react-native-animatable';
 
 export default function Bem_Vindo() {
+    // consts
     const navigation = useNavigation();
     const [fontsLoaded] = useFonts({
         'Itim': require('../assets/fonts/Itim-Regular.ttf')
-    });
+    });    
     const [fontsLoaded2] = useFonts({
         'Inter': require('../assets/fonts/Inter.ttf')
     });

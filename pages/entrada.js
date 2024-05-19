@@ -12,6 +12,23 @@ export default function App() {
 
     // Função para adicionar os dados à lista
     const handleAddDataToList = (produto, quantidade, valor) => {
+
+        if(produto === '' || quantidade === '' || valor === '' ){
+            alert('Por favor, preencha os campos de valor, quantidade e produto.');
+            return;
+        }
+        if(produto === '' ){
+            alert('Por favor, preencha o campo produto');
+            return;
+        }
+        if(quantidade === '' ){
+            alert('Por favor, preencha o campo quantidade');
+            return;
+        }
+        if(valor === '' ){
+            alert('Por favor, preencha o campo valor');
+            return;
+        }
         setDataList([...dataList, { produto, quantidade, valor }]);
     };
 
