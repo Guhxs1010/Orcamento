@@ -78,33 +78,27 @@ export default function App() {
                 />
             </View>
 
-            <ImageBackground
-                source={require('../assets/fundo.png')}
-                style={ESTILOS.formBackground}
-            >
-                <View style={ESTILOS.form}>
-                    <View style={ESTILOS.caixabotao}>
-                        <View style={ESTILOS.botaoadd}>
-                            <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
-                                <Ionicons name="add-outline" size={44} color="#fff" style={ESTILOS.buttonadd} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
 
-                    <View style={ESTILOS.finalizar}>
-
-                        <View style={ESTILOS.textoform90}>
-                            <Text style={ESTILOS.formtexto}>Valor Total: R$ {/* valor total item*/}</Text>
-                        </View>
-
-                        <View style={ESTILOS.finalizarbotao}>
-                            <Text style={ESTILOS.botaofinalizar}>Finalizar</Text>
-                        </View>
-
+            <View style={ESTILOS.form}>
+                <View style={ESTILOS.caixabotao}>
+                    <View style={ESTILOS.botaoadd}>
+                        <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
+                            <Ionicons name="add-outline" size={44} color="#fff" style={ESTILOS.buttonadd} />
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </ImageBackground>
 
+                <View style={ESTILOS.finalizar}>
+                    <View style={ESTILOS.textoform90}>
+                        <Text style={ESTILOS.formtexto}>Valor Total: R$ {/* valor total item*/}</Text>
+                    </View>
+
+                    <View style={ESTILOS.finalizarbotao}>
+                        <Text style={ESTILOS.botaofinalizar}>Finalizar</Text>
+                    </View>
+                </View>
+            </View>
+            
             {/* Modal */}
             <ModalScreen modalVisible={modalVisible} setModalVisible={setModalVisible} handleAddDataToList={handleAddDataToList} />
         </View>
@@ -116,6 +110,10 @@ const ESTILOS = StyleSheet.create({
         flex: 8,
         alignItems: 'center',
         paddingTop: 20,
+    },
+
+    formtexto: {
+        color: '#fff'
     },
     texto: {
         top: 20,
@@ -133,11 +131,9 @@ const ESTILOS = StyleSheet.create({
         flex: 4,
     },
     caixabotao: {
-        alignItems:'center',
-        width: '100%',
-        height: 200,
-        borderRadius: 60,
-        paddingVertical: 8,
+        alignItems: 'center',
+        justifyContent: 'center', // Adicionado para centralizar verticalmente
+
     },
     buttonremove: {
         left: 325,
@@ -159,13 +155,11 @@ const ESTILOS = StyleSheet.create({
     buttonadd2: {
         backgroundColor: '#06C167',
         width: '50%',
-        height: 80,
-        borderRadius: 50, 
+        height: '12%',
+        borderRadius: 60,
         alignItems: 'center',
-        textAlign:'center',
-        justifyContent:'center',
-        bottom: 130,
-        left:40,
+        justifyContent: 'center',
+
     },
     inputformesquerda: {
         backgroundColor: '#152128',
@@ -252,12 +246,29 @@ const ESTILOS = StyleSheet.create({
         width: '33%',
     },
     form: {
-        flex: 0.2,
-        padding: 16,
-        marginTop: 16,
-        marginBottom: 8,
-        flexDirection: 'row-reverse',
-        top: 55,
+        flex: 2,
+        top: 50,
+        width: '100%',
+        borderRadius: 20,
+        backgroundColor: '#152128',
+        paddingVertical: 20, // Adicionado para dar espaço para o botão "Finalizar"
+    },
+    finalizar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20, // Adicionado para alinhar os elementos dentro da caixa
+    },
+    finalizarbotao: {
+        backgroundColor: '#06C167',
+        borderRadius: 8,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+    },
+    botaofinalizar: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
     },
     label: {
         fontWeight: 'bold',
@@ -317,8 +328,10 @@ const ESTILOS = StyleSheet.create({
         height: 500,
     },
     botaoadd: {
-        width: '33%',
-        height: 500,
+        width: '35%',
+        height: 550,
+        alignItems: 'center',
+        top: 42,
     },
     formflat: {
         width: '100%',
