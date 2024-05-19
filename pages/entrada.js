@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList, ScrollView, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList, Modal } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import ModalScreen from '../pages/Modalscreen';
+import { useNavigation } from '@react-navigation/native';
 
 export default function App() {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [dataList, setDataList] = useState([]);
+    const [totalValue, setTotalValue] = useState(0);
 
     // Função para adicionar os dados à lista
     const handleAddDataToList = (produto, quantidade, valor) => {
@@ -21,8 +22,26 @@ export default function App() {
         setDataList(updatedList); // Atualiza a lista
     };
 
-    return (
+    // Função para calcular o valor total dos itens na lista
+    const calculateTotalValue = () => {
+        let total = 0;
+        dataList.forEach(item => {
+            total += parseFloat(item.valor); // Converte o valor para número e adiciona ao total
+        });
+        setTotalValue(total.toFixed(2)); // Define o valor total com duas casas decimais
+    };
 
+    // Atualiza o valor total sempre que a lista de dados for atualizada
+    useEffect(() => {
+        calculateTotalValue();
+    }, [dataList]);
+
+    // Função para navegar para a tela de sucesso
+    const handleFinalizar = () => {
+        navigation.navigate('TelaSucesso', { totalValue });
+    };
+
+    return (
         <View style={ESTILOS.container}>
             <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#fff" />
 
@@ -91,10 +110,10 @@ export default function App() {
                 {/* Botão Finalizar dentro da Caixa do Formulário */}
                 <View style={ESTILOS.finalizar}>
                     <View style={ESTILOS.textoform90}>
-                        <Text style={ESTILOS.formtexto}>Valor Total: R$ {/* valor total item*/}</Text>
+                        <Text style={ESTILOS.formtexto}>Valor Total: R$ {totalValue}</Text>
                     </View>
 
-                    <TouchableOpacity onPress={() => { }} style={ESTILOS.finalizarbotao}>
+                    <TouchableOpacity onPress={handleFinalizar} style={ESTILOS.finalizarbotao}>
                         <Text style={ESTILOS.botaofinalizar}>Finalizar</Text>
                     </TouchableOpacity>
                 </View>
@@ -108,14 +127,14 @@ export default function App() {
 
 const ESTILOS = StyleSheet.create({
     container: {
-        flex: 8,
+        flex: 1,
         alignItems: 'center',
         paddingTop: 20,
     },
 
     formtexto: {
         color: '#fff',
-        fontSize:22,
+        fontSize: 22,
         fontFamily: 'Itim',
     },
     texto: {

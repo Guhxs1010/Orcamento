@@ -12,9 +12,6 @@ export default function Bem_Vindo() {
     const [fontsLoaded2] = useFonts({
         'Inter': require('../assets/fonts/Inter.ttf')
     });
-    const [fontsLoaded3] = useFonts({
-        'Robot': require('../assets/fonts/RobotoFlex.ttf')
-    });
 
     if (!fontsLoaded) {
         return null;
