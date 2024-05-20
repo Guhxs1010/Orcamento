@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList, Modal } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ModalScreen from '../pages/Modalscreen';
 import { useNavigation } from '@react-navigation/native';
@@ -9,28 +9,42 @@ export default function App() {
     const [modalVisible, setModalVisible] = useState(false);
     const [dataList, setDataList] = useState([]);
     const [totalValue, setTotalValue] = useState(0);
+    const [editingIndex, setEditingIndex] = useState(null); // Novo estado para rastrear o índice de edição
 
-    // Função para adicionar os dados à lista
+    // Função para definir o índice de edição ao clicar em um campo de entrada
+    const handleEditItem = (index) => {
+        setEditingIndex(index);
+        setModalVisible(true); // Mostra o modal quando um item é editado
+    };
+
+    // Efeito para exibir o modal quando editingIndex for definido
+    useEffect(() => {
+        if (editingIndex !== null) {
+            setModalVisible(true);
+        }
+    }, [editingIndex]);
+
+    // Função para adicionar os dados à lista ou editar um item existente
     const handleAddDataToList = (produto, quantidade, valor) => {
-
-        if(produto === '' || quantidade === '' || valor === '' ){
+        if (produto === '' || quantidade === '' || valor === '') {
             alert('Por favor, preencha os campos de valor, quantidade e produto.');
             return;
         }
-        if(produto === '' ){
-            alert('Por favor, preencha o campo produto');
-            return;
+
+        const newItem = { produto, quantidade, valor };
+        if (editingIndex !== null) {
+            // Se estiver em modo de edição, atualiza o item existente
+            const updatedList = [...dataList];
+            updatedList[editingIndex] = newItem;
+            setDataList(updatedList);
+            setEditingIndex(null); // Sai do modo de edição
+            setModalVisible(false); // Esconde o modal
+        } else {
+            // Caso contrário, adiciona um novo item à lista
+            setDataList([...dataList, newItem]);
         }
-        if(quantidade === '' ){
-            alert('Por favor, preencha o campo quantidade');
-            return;
-        }
-        if(valor === '' ){
-            alert('Por favor, preencha o campo valor');
-            return;
-        }
-        setDataList([...dataList, { produto, quantidade, valor }]);
     };
+
 
     // Função para remover um item da lista
     const handleRemoveItem = (index) => {
@@ -38,6 +52,7 @@ export default function App() {
         updatedList.splice(index, 1); // Remove o item do array
         setDataList(updatedList); // Atualiza a lista
     };
+
 
     // Função para calcular o valor total dos itens na lista
     const calculateTotalValue = () => {
@@ -86,28 +101,26 @@ export default function App() {
                     data={dataList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
-                        <View style={ESTILOS.flat}>
-                            <View style={ESTILOS.formflat}>
-                                <View style={ESTILOS.produtos}>
-                                    <View style={ESTILOS.inputform}>
-                                        <Text style={ESTILOS.textoprod}>{item.produto}</Text>
-                                    </View>
-                                </View>
+                        <View style={ESTILOS.formflat}>
+                            <View style={ESTILOS.produtos}>
+                                <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputform}>
+                                    <Text style={ESTILOS.textoprod}>{item.produto}</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                                <View style={ESTILOS.quantidade}>
-                                    <View style={ESTILOS.inputformmeio}>
-                                        <Text style={ESTILOS.texto}>{item.quantidade}</Text>
-                                    </View>
-                                </View>
+                            <View style={ESTILOS.quantidade}>
+                                <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputformmeio}>
+                                    <Text style={ESTILOS.texto}>{item.quantidade}</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                                <View style={ESTILOS.valor}>
-                                    <View style={ESTILOS.inputformesquerda}>
-                                        <Text style={ESTILOS.texto}>{item.valor}</Text>
-                                        <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
-                                            <Ionicons name="trash-sharp" size={27} color="#06C167" />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
+                            <View style={ESTILOS.valor}>
+                                <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputformesquerda}>
+                                    <Text style={ESTILOS.texto}>{item.valor}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
+                                    <Ionicons name="trash-sharp" size={27} color="#06C167" />
+                                </TouchableOpacity>
                             </View>
                         </View>
                     )}
@@ -171,7 +184,7 @@ const ESTILOS = StyleSheet.create({
     },
     buttonremove: {
         left: 325,
-        bottom: 6,
+        bottom: 50,
     },
     produtosform: {
         backgroundColor: '#D9D9D9',
@@ -289,7 +302,7 @@ const ESTILOS = StyleSheet.create({
     },
     botaofinalizar: {
         color: '#152128',
-        bottom:2,
+        bottom: 2,
         fontSize: 18,
         fontWeight: 'bold',
         fontFamily: 'Itim',
@@ -358,27 +371,27 @@ const ESTILOS = StyleSheet.create({
     },
     botaoadd: {
         width: '35%',
-        height:550,
+        height: 550,
         alignItems: 'center',
-        bottom:72,
+        bottom: 72,
     },
     finalizar: {
         alignItems: 'flex-start',
-        left:50,
-        bottom:525,
+        left: 50,
+        bottom: 525,
     },
     finalizarbotao: {
         backgroundColor: '#fff',
-        width:'70%',
-        height:45,
+        width: '70%',
+        height: 45,
         borderRadius: 15,
         paddingVertical: 10,
         paddingHorizontal: 20,
-        top:15,
+        top: 15,
         alignItems: 'center',
-        justifyContent:'center',
-        textAlign:'center',
-        left:10,
+        justifyContent: 'center',
+        textAlign: 'center',
+        left: 10,
     },
     formflat: {
         width: '100%',
