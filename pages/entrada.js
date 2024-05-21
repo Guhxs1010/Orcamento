@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ModalScreen from '../pages/Modalscreen';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
     const navigation = useNavigation();
@@ -11,6 +12,31 @@ export default function App() {
     const [totalValue, setTotalValue] = useState(0);
     const [editingIndex, setEditingIndex] = useState(null); // Novo estado para rastrear o índice de edição
 
+    // Função para armazenar os dados da lista na AsyncStorage
+    const storeData = async (value) => {
+        try {
+            await AsyncStorage.setItem('dataList', JSON.stringify(value));
+        } catch (error) {
+            setError('Error saving data: ' + error.message);
+        }
+    };
+
+    // Função para carregar os dados da lista da AsyncStorage
+    const loadData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('dataList');
+            if (value !== null) {
+                setDataList(JSON.parse(value));
+            }
+        } catch (error) {
+            setError('Error loading data: ' + error.message);
+        }
+    };
+
+    // Carregar os dados da lista ao montar a tela
+    useEffect(() => {
+        loadData();
+    }, []);
     // Função para definir o índice de edição ao clicar em um campo de entrada
     const handleEditItem = (index) => {
         setEditingIndex(index);
@@ -43,6 +69,7 @@ export default function App() {
             // Caso contrário, adiciona um novo item à lista
             setDataList([...dataList, newItem]);
         }
+        storeData(dataList);
     };
 
 
@@ -51,6 +78,7 @@ export default function App() {
         const updatedList = [...dataList];
         updatedList.splice(index, 1); // Remove o item do array
         setDataList(updatedList); // Atualiza a lista
+        storeData(dataList);
     };
 
 
@@ -66,13 +94,19 @@ export default function App() {
     // Atualiza o valor total sempre que a lista de dados for atualizada
     useEffect(() => {
         calculateTotalValue();
+        storeData(dataList);
     }, [dataList]);
 
-    // Função para navegar para a tela de sucesso
-    const handleFinalizar = () => {
+   // Função para finalizar e limpar a lista
+   const handleFinalizar = () => {
+    // Limpar os dados da lista na AsyncStorage
+    AsyncStorage.removeItem('dataList').then(() => {
+        // Navegar para a próxima tela
         navigation.navigate('TelaSucesso', { totalValue });
-    };
-
+    }).catch(error => {
+        navigation.navigate('TelaErro', { errorMessage: 'Error removing data: ' + error.message });
+    });
+};
     return (
         <View style={ESTILOS.container}>
             <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#fff" />

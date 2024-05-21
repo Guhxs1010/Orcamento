@@ -2,6 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Bem_Vindo from './pages/index';
 import Acesso from './pages/entrada';
 import TelaSucesso from './pages/TelaSucesso';
+import TelaErro from './pages/TelaErro';
 
 const Stack = createStackNavigator();
 
@@ -15,9 +16,14 @@ export default function Routes() {
             <Stack.Screen
                 name="entrada"
                 component={Acesso} />
+
             <Stack.Screen
                 name="TelaSucesso"
                 component={TelaSucesso} />
+
+            <Stack.Screen
+                name="TelaErro"
+                component={TelaErro} />
         </Stack.Navigator>
     );
 }
