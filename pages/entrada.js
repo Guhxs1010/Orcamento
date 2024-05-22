@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import ModalScreen from '../pages/Modalscreen';
 import { useNavigation } from '@react-navigation/native';
@@ -86,7 +86,7 @@ export default function App() {
     const calculateTotalValue = () => {
         let total = 0;
         dataList.forEach(item => {
-            total += parseFloat(item.valor); // Converte o valor para número e adiciona ao total
+            total += parseFloat(item.valor) * parseInt(item.quantidade); // Converte o valor para número e adiciona ao total
         });
         setTotalValue(total.toFixed(2)); // Define o valor total com duas casas decimais
     };
@@ -97,16 +97,16 @@ export default function App() {
         storeData(dataList);
     }, [dataList]);
 
-   // Função para finalizar e limpar a lista
-   const handleFinalizar = () => {
-    // Limpar os dados da lista na AsyncStorage
-    AsyncStorage.removeItem('dataList').then(() => {
-        // Navegar para a próxima tela
-        navigation.navigate('TelaSucesso', { totalValue });
-    }).catch(error => {
-        navigation.navigate('TelaErro', { errorMessage: 'Error removing data: ' + error.message });
-    });
-};
+    // Função para finalizar e limpar a lista
+    const handleFinalizar = () => {
+        // Limpar os dados da lista na AsyncStorage
+        AsyncStorage.removeItem('dataList').then(() => {
+            // Navegar para a próxima tela
+            navigation.navigate('TelaSucesso', { totalValue });
+        }).catch(error => {
+            navigation.navigate('TelaErro', { errorMessage: 'Error removing data: ' + error.message });
+        });
+    };
     return (
         <View style={ESTILOS.container}>
             <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#fff" />
@@ -116,6 +116,13 @@ export default function App() {
                     <Ionicons name="chevron-back-outline" size={44} color="white" />
                 </TouchableOpacity>
                 <Text style={ESTILOS.textcabe}>Insira os valores, os produtos e quantidade</Text>
+
+                <TouchableOpacity
+                    style={ESTILOS.buttonquestion}
+                    onPress={() => navigation.navigate('Question')}
+                >
+                    <Ionicons name="help-circle-outline" size={44} color="white"></Ionicons>
+                </TouchableOpacity>
             </View>
 
             <View style={ESTILOS.formcontainer}>
@@ -195,7 +202,10 @@ const ESTILOS = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 20,
     },
-
+    buttonquestion:{
+        left:150,
+        bottom:35,
+    },
     formtexto: {
         color: '#fff',
         fontSize: 22,
@@ -284,7 +294,6 @@ const ESTILOS = StyleSheet.create({
         fontFamily: 'Itim',
         top: 20,
         width: '60%',
-        left: 20,
     },
     textform: {
         color: '#000',

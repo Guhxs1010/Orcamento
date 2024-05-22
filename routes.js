@@ -3,6 +3,7 @@ import Bem_Vindo from './pages/index';
 import Acesso from './pages/entrada';
 import TelaSucesso from './pages/TelaSucesso';
 import TelaErro from './pages/TelaErro';
+import Question from './pages/Question';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,9 @@ export default function Routes() {
             <Stack.Screen
                 name="TelaErro"
                 component={TelaErro} />
+            <Stack.Screen
+                name="Question"
+                component={Question} />
         </Stack.Navigator>
     );
 }
