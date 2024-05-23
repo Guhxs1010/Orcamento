@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "Orcamento",
-    "slug": "Orcamento",
-    "version": "1.0.0",
+    "name": "Orçamento Amigo",
+    "slug": "Orçamento Amigo",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Orcamento.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/Orcamento.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#25292z"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -19,15 +19,19 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/Orcamento.png",
+        "backgroundColor": "#ffffff",
+        "versionCode":2
+      },
+      "package": "com.guhxs.emojiSmash"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-font"
-    ]
+    "extra": {
+      "eas": {
+        "projectId": "a30dc63d-85f4-4912-9b7e-d964a2bca422"
+      }
+    }
   }
 }

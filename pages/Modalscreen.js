@@ -41,11 +41,16 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
                             style={ESTILOS.inputModal}
                             placeholder="Valor R$"
                             onChangeText={(text) => {
-                                const formattedText = text.replace(/[^0-9]/g, '');//para não aceitar letras
-                                setSelectedValor(formattedText);
+                                // Remove todos os caracteres que não são dígitos, ponto decimal ou vírgula
+                                const formattedText = text.replace(/[^0-9.,]/g, '');
+                                // Substitui vírgulas por pontos (se necessário)
+                                const textWithDot = formattedText.replace(/,/g, '.');
+                                // Atualiza o estado com o texto formatado
+                                setSelectedValor(textWithDot);
                             }}
                             value={selectedValor}
                         />
+
                         <TextInput
                             style={ESTILOS.inputModal}
                             placeholder="Quantidade"
@@ -59,13 +64,17 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
                             style={ESTILOS.inputModal}
                             placeholder="Produto"
                             onChangeText={(text) => {
-                                const formattedText = text.replace(/[^a-zA-Z]/g, ''); // Aceita apenas letras
-                                const limitedText = formattedText.slice(0, 9); // Limita o número de caracteres
+                                // Remove todos os caracteres que não são letras ou espaços
+                                const formattedText = text.replace(/[^a-zA-ZÀ-ú\sç]/g, '');
+                                // Limita o número de caracteres
+                                const limitedText = formattedText.slice(0, 9);
+                                // Atualiza o estado com o texto formatado
                                 setSelectedProduto(limitedText);
                             }}
                             value={selectedProduto}
                             maxLength={9} // Limita o número máximo de caracteres
                         />
+
                     </View>
                     <TouchableOpacity
                         style={ESTILOS.modalButton}

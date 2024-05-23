@@ -1,28 +1,113 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList, ScrollView, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
 import ModalScreen from '../pages/Modalscreen';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function App() {
     const navigation = useNavigation();
     const [modalVisible, setModalVisible] = useState(false);
     const [dataList, setDataList] = useState([]);
+    const [totalValue, setTotalValue] = useState(0);
+    const [editingIndex, setEditingIndex] = useState(null); // Novo estado para rastrear o índice de edição
 
-    // Função para adicionar os dados à lista
-    const handleAddDataToList = (produto, quantidade, valor) => {
-        setDataList([...dataList, { produto, quantidade, valor }]);
+    // Função para armazenar os dados da lista na AsyncStorage
+    const storeData = async (value) => {
+        try {
+            await AsyncStorage.setItem('dataList', JSON.stringify(value));
+        } catch (error) {
+            setError('Error saving data: ' + error.message);
+        }
     };
+
+    // Função para carregar os dados da lista da AsyncStorage
+    const loadData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('dataList');
+            if (value !== null) {
+                setDataList(JSON.parse(value));
+            }
+        } catch (error) {
+            setError('Error loading data: ' + error.message);
+        }
+    };
+
+    // Carregar os dados da lista ao montar a tela
+    useEffect(() => {
+        loadData();
+    }, []);
+    // Função para definir o índice de edição ao clicar em um campo de entrada
+    const handleEditItem = (index) => {
+        setEditingIndex(index);
+        setModalVisible(true); // Mostra o modal quando um item é editado
+    };
+
+    // Efeito para exibir o modal quando editingIndex for definido
+    useEffect(() => {
+        if (editingIndex !== null) {
+            setModalVisible(true);
+        }
+    }, [editingIndex]);
+
+    // Função para adicionar os dados à lista ou editar um item existente
+    const handleAddDataToList = (produto, quantidade, valor) => {
+        if (produto === '' || quantidade === '' || valor === '') {
+            alert('Por favor, preencha os campos de valor, quantidade e produto.');
+            return;
+        }
+
+        const newItem = { produto, quantidade, valor };
+        if (editingIndex !== null) {
+            // Se estiver em modo de edição, atualiza o item existente
+            const updatedList = [...dataList];
+            updatedList[editingIndex] = newItem;
+            setDataList(updatedList);
+            setEditingIndex(null); // Sai do modo de edição
+            setModalVisible(false); // Esconde o modal
+        } else {
+            // Caso contrário, adiciona um novo item à lista
+            setDataList([...dataList, newItem]);
+        }
+        storeData(dataList);
+    };
+
 
     // Função para remover um item da lista
     const handleRemoveItem = (index) => {
         const updatedList = [...dataList];
         updatedList.splice(index, 1); // Remove o item do array
         setDataList(updatedList); // Atualiza a lista
+        storeData(dataList);
     };
 
-    return (
 
+    // Função para calcular o valor total dos itens na lista
+    const calculateTotalValue = () => {
+        let total = 0;
+        dataList.forEach(item => {
+            total += parseFloat(item.valor) * parseInt(item.quantidade); // Converte o valor para número e adiciona ao total
+        });
+        setTotalValue(total.toFixed(2)); // Define o valor total com duas casas decimais
+    };
+
+    // Atualiza o valor total sempre que a lista de dados for atualizada
+    useEffect(() => {
+        calculateTotalValue();
+        storeData(dataList);
+    }, [dataList]);
+
+    // Função para finalizar e limpar a lista
+    const handleFinalizar = () => {
+        // Limpar os dados da lista na AsyncStorage
+        AsyncStorage.removeItem('dataList').then(() => {
+            // Navegar para a próxima tela
+            navigation.navigate('TelaSucesso', { totalValue });
+        }).catch(error => {
+            navigation.navigate('TelaErro', { errorMessage: 'Error removing data: ' + error.message });
+        });
+    };
+    return (
         <View style={ESTILOS.container}>
             <StatusBar barStyle="dark-content" translucent={true} backgroundColor="#fff" />
 
@@ -31,6 +116,13 @@ export default function App() {
                     <Ionicons name="chevron-back-outline" size={44} color="white" />
                 </TouchableOpacity>
                 <Text style={ESTILOS.textcabe}>Insira os valores, os produtos e quantidade</Text>
+
+                <TouchableOpacity
+                    style={ESTILOS.buttonquestion}
+                    onPress={() => navigation.navigate('Question')}
+                >
+                    <Ionicons name="help-circle-outline" size={44} color="white"></Ionicons>
+                </TouchableOpacity>
             </View>
 
             <View style={ESTILOS.formcontainer}>
@@ -50,60 +142,53 @@ export default function App() {
                     data={dataList}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
-                        <View style={ESTILOS.flat}>
-                            <View style={ESTILOS.formflat}>
-                                <View style={ESTILOS.produtos}>
-                                    <View style={ESTILOS.inputform}>
-                                        <Text style={ESTILOS.textoprod}>{item.produto}</Text>
-                                    </View>
-                                </View>
+                        <View style={ESTILOS.formflat}>
+                            <View style={ESTILOS.produtos}>
+                                <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputform}>
+                                    <Text style={ESTILOS.textoprod}>{item.produto}</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                                <View style={ESTILOS.quantidade}>
-                                    <View style={ESTILOS.inputformmeio}>
-                                        <Text style={ESTILOS.texto}>{item.quantidade}</Text>
-                                    </View>
-                                </View>
+                            <View style={ESTILOS.quantidade}>
+                                <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputformmeio}>
+                                    <Text style={ESTILOS.texto}>{item.quantidade}</Text>
+                                </TouchableOpacity>
+                            </View>
 
-                                <View style={ESTILOS.valor}>
-                                    <View style={ESTILOS.inputformesquerda}>
-                                        <Text style={ESTILOS.texto}>{item.valor}</Text>
-                                        <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
-                                            <Ionicons name="trash-sharp" size={27} color="#06C167" />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
+                            <View style={ESTILOS.valor}>
+                                <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputformesquerda}>
+                                    <Text style={ESTILOS.texto}>{item.valor}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
+                                    <Ionicons name="trash-sharp" size={27} color="#06C167" />
+                                </TouchableOpacity>
                             </View>
                         </View>
                     )}
                 />
             </View>
 
-            <ImageBackground
-                source={require('../assets/fundo.png')}
-                style={ESTILOS.formBackground}
-            >
-                <View style={ESTILOS.form}>
-                    <View style={ESTILOS.caixabotao}>
-                        <View style={ESTILOS.botaoadd}>
-                            <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
-                                <Ionicons name="add-outline" size={44} color="#fff" style={ESTILOS.buttonadd} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-
-                    <View style={ESTILOS.finalizar}>
-
-                        <View style={ESTILOS.textoform90}>
-                            <Text style={ESTILOS.formtexto}>Valor Total: R$ {/* valor total item*/}</Text>
-                        </View>
-
-                        <View style={ESTILOS.finalizarbotao}>
-                            <Text style={ESTILOS.botaofinalizar}>Finalizar</Text>
-                        </View>
-
+            <View style={ESTILOS.form}>
+                {/* Botão Adicionar */}
+                <View style={ESTILOS.caixabotao}>
+                    <View style={ESTILOS.botaoadd}>
+                        <TouchableOpacity onPress={() => setModalVisible(true)} style={ESTILOS.buttonadd2}>
+                            <Ionicons name="add-outline" size={44} color="#fff" style={ESTILOS.buttonadd} />
+                        </TouchableOpacity>
                     </View>
                 </View>
-            </ImageBackground>
+
+                {/* Botão Finalizar dentro da Caixa do Formulário */}
+                <View style={ESTILOS.finalizar}>
+                    <View style={ESTILOS.textoform90}>
+                        <Text style={ESTILOS.formtexto}>Valor Total: R$ {totalValue}</Text>
+                    </View>
+
+                    <TouchableOpacity onPress={handleFinalizar} style={ESTILOS.finalizarbotao}>
+                        <Text style={ESTILOS.botaofinalizar}>Finalizar</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
 
             {/* Modal */}
             <ModalScreen modalVisible={modalVisible} setModalVisible={setModalVisible} handleAddDataToList={handleAddDataToList} />
@@ -113,9 +198,18 @@ export default function App() {
 
 const ESTILOS = StyleSheet.create({
     container: {
-        flex: 8,
+        flex: 1,
         alignItems: 'center',
         paddingTop: 20,
+    },
+    buttonquestion:{
+        left:150,
+        bottom:35,
+    },
+    formtexto: {
+        color: '#fff',
+        fontSize: 22,
+        fontFamily: 'Itim',
     },
     texto: {
         top: 20,
@@ -132,16 +226,9 @@ const ESTILOS = StyleSheet.create({
     FlatList: {
         flex: 4,
     },
-    caixabotao: {
-        alignItems:'center',
-        width: '100%',
-        height: 200,
-        borderRadius: 60,
-        paddingVertical: 8,
-    },
     buttonremove: {
         left: 325,
-        bottom: 6,
+        bottom: 50,
     },
     produtosform: {
         backgroundColor: '#D9D9D9',
@@ -159,13 +246,11 @@ const ESTILOS = StyleSheet.create({
     buttonadd2: {
         backgroundColor: '#06C167',
         width: '50%',
-        height: 80,
-        borderRadius: 50, 
+        height: '12%',
+        borderRadius: 60,
         alignItems: 'center',
-        textAlign:'center',
-        justifyContent:'center',
-        bottom: 130,
-        left:40,
+        justifyContent: 'center',
+
     },
     inputformesquerda: {
         backgroundColor: '#152128',
@@ -209,7 +294,6 @@ const ESTILOS = StyleSheet.create({
         fontFamily: 'Itim',
         top: 20,
         width: '60%',
-        left: 20,
     },
     textform: {
         color: '#000',
@@ -252,12 +336,19 @@ const ESTILOS = StyleSheet.create({
         width: '33%',
     },
     form: {
-        flex: 0.2,
-        padding: 16,
-        marginTop: 16,
-        marginBottom: 8,
-        flexDirection: 'row-reverse',
-        top: 55,
+        flex: 2.3,
+        top: 50,
+        width: '100%',
+        borderRadius: 20,
+        backgroundColor: '#152128',
+        paddingVertical: 20, // Adicionado para dar espaço para o botão "Finalizar"
+    },
+    botaofinalizar: {
+        color: '#152128',
+        bottom: 2,
+        fontSize: 18,
+        fontWeight: 'bold',
+        fontFamily: 'Itim',
     },
     label: {
         fontWeight: 'bold',
@@ -316,9 +407,34 @@ const ESTILOS = StyleSheet.create({
         width: '33%',
         height: 500,
     },
+    caixabotao: {
+        alignItems: 'center',
+        justifyContent: 'flex-start', // Ajuste para manter o botão Adicionar visível
+        marginTop: 20, // Adicione margem superior para manter o botão Adicionar visível
+    },
     botaoadd: {
-        width: '33%',
-        height: 500,
+        width: '35%',
+        height: 550,
+        alignItems: 'center',
+        bottom: 72,
+    },
+    finalizar: {
+        alignItems: 'flex-start',
+        left: 50,
+        bottom: 525,
+    },
+    finalizarbotao: {
+        backgroundColor: '#fff',
+        width: '70%',
+        height: 45,
+        borderRadius: 15,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        top: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        left: 10,
     },
     formflat: {
         width: '100%',
