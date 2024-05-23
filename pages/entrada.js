@@ -127,13 +127,13 @@ export default function App() {
 
             <View style={ESTILOS.formcontainer}>
                 <View style={ESTILOS.formtext}>
-                    <Text style={ESTILOS.textform}>Valor</Text>
+                    <Text style={ESTILOS.textform}>Produto</Text>
                 </View>
                 <View style={ESTILOS.formtext}>
                     <Text style={ESTILOS.textform}>Quantidade</Text>
                 </View>
                 <View style={ESTILOS.formtext}>
-                    <Text style={ESTILOS.textform}>Produto</Text>
+                    <Text style={ESTILOS.textform}>Valor</Text>
                 </View>
             </View>
 
@@ -143,13 +143,15 @@ export default function App() {
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => (
                         <View style={ESTILOS.formflat}>
-                            <View style={ESTILOS.produtos}>
+                            <View style={ESTILOS.valor}>
                                 <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputform}>
-                                    <Text style={ESTILOS.textoprod}>{item.produto}</Text>
+                                    <Text style={ESTILOS.textoval}>{item.valor}</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
-                                    <Ionicons name="trash-sharp" size={27} color="#06C167" />
-                                </TouchableOpacity>
+                                <View style={ESTILOS.removebutton}>
+                                    <TouchableOpacity style={ESTILOS.buttonremove}>
+                                        <Ionicons onPress={() => handleRemoveItem(index)} name="trash-sharp" size={27} color="#06C167" />
+                                    </TouchableOpacity>
+                                </View>
                             </View>
 
                             <View style={ESTILOS.quantidade}>
@@ -158,9 +160,9 @@ export default function App() {
                                 </TouchableOpacity>
                             </View>
 
-                            <View style={ESTILOS.valor}>
+                            <View style={ESTILOS.produtos}>
                                 <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputformesquerda}>
-                                    <Text style={ESTILOS.texto}>{item.valor}</Text>
+                                    <Text style={ESTILOS.textoprod}>{item.produto}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -202,9 +204,9 @@ const ESTILOS = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 20,
     },
-    buttonquestion:{
-        left:150,
-        bottom:35,
+    buttonquestion: {
+        left: 150,
+        bottom: 35,
     },
     formtexto: {
         color: '#fff',
@@ -220,16 +222,23 @@ const ESTILOS = StyleSheet.create({
     textoprod: {
         top: 20,
         fontSize: 18,
-        right: 22,
+        left: 20,
         color: 'white',
     },
     FlatList: {
         flex: 4,
     },
+    removebutton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     buttonremove: {
-        bottom: 50,
-        alignItems:'flex-end',
-        right:10,
+        width: 35,
+        size:27,
+        bottom: 22,
+        position: 'absolute',
+        right: 0,   
+
     },
     produtosform: {
         backgroundColor: '#D9D9D9',
@@ -332,6 +341,13 @@ const ESTILOS = StyleSheet.create({
     },
     valor: {
         width: '33%',
+    },
+    textoval: {
+        top: 20,
+        fontSize: 18,
+        textAlign: 'center',
+        color: 'white',
+        right: 20,
     },
     produtos: {
         width: '33%',

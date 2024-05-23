@@ -37,7 +37,7 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
                     </TouchableOpacity>
 
                     <View style={ESTILOS.inputsmodal}>
-                        <TextInput
+                    <TextInput
                             style={ESTILOS.inputModal}
                             placeholder="Produto"
                             onChangeText={(text) => {
@@ -51,19 +51,18 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
                             value={selectedProduto}
                             maxLength={9} // Limita o número máximo de caracteres
                         />
-
+                        
 
                         <TextInput
                             style={ESTILOS.inputModal}
-                            placeholder="Quantidade ou KG"
+                            placeholder="Quantidade"
                             onChangeText={(text) => {
-                                const formattedText = text.replace(/[^0-9.,]/g, ''); // Aceita apenas dígitos, ponto decimal e vírgula
-                                const textWithDot = formattedText.replace(/,/g, '.'); // Substitui vírgulas por pontos, se necessário
-                                setSelectedQuantidade(textWithDot);
+                                const formattedText = text.replace(/[^0-9]/g, '');//para não aceitar letras
+                                setSelectedQuantidade(formattedText);
                             }}
                             value={selectedQuantidade}
                         />
-
+                        
                         <TextInput
                             style={ESTILOS.inputModal}
                             placeholder="Valor R$"
@@ -174,8 +173,8 @@ const ESTILOS = StyleSheet.create({
         width: '100%',
     },
     closebotao: {
-        alignItems: 'flex-end',
-        justifyContent: 'flex-end',
+        alignItems:'flex-end',
+        justifyContent:'flex-end',
         bottom: 45,
     },
     header: {
