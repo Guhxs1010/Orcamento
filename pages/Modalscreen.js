@@ -32,7 +32,7 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
                     <View style={ESTILOS.Titlemodal}>
                         <Text style={[ESTILOS.modalTitle, { color: '#fff' }]}>Insira as Informações</Text>
                     </View>
-                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+                    <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={ESTILOS.closebotao} >
                         <Ionicons name="close" size={44} color="white" style={ESTILOS.buttonclose} />
                     </TouchableOpacity>
 
@@ -171,9 +171,10 @@ const ESTILOS = StyleSheet.create({
         paddingTop: 20,
         width: '100%',
     },
-    buttonclose: {
-        left: 240,
-        bottom: 50,
+    closebotao: {
+        alignItems:'flex-end',
+        justifyContent:'flex-end',
+        bottom: 45,
     },
     header: {
         fontSize: 32,

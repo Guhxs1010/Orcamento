@@ -147,6 +147,9 @@ export default function App() {
                                 <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputform}>
                                     <Text style={ESTILOS.textoprod}>{item.produto}</Text>
                                 </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
+                                    <Ionicons name="trash-sharp" size={27} color="#06C167" />
+                                </TouchableOpacity>
                             </View>
 
                             <View style={ESTILOS.quantidade}>
@@ -158,9 +161,6 @@ export default function App() {
                             <View style={ESTILOS.valor}>
                                 <TouchableOpacity onPress={() => handleEditItem(index)} style={ESTILOS.inputformesquerda}>
                                     <Text style={ESTILOS.texto}>{item.valor}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => handleRemoveItem(index)} style={ESTILOS.buttonremove}>
-                                    <Ionicons name="trash-sharp" size={27} color="#06C167" />
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -227,8 +227,9 @@ const ESTILOS = StyleSheet.create({
         flex: 4,
     },
     buttonremove: {
-        left: 325,
         bottom: 50,
+        alignItems:'flex-end',
+        right:10,
     },
     produtosform: {
         backgroundColor: '#D9D9D9',
