@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "Orçamento Amigo",
-    "slug": "Orçamento Amigo",
+    "name": "OrcamentoAmigo",
+    "slug": "OrcamentoAmigo",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/Orcamento.png",
+    "icon": "./assets/Logoamigo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Orcamento.png",
+      "image": "./assets/Logoamigo.png",
       "resizeMode": "contain",
       "backgroundColor": "#25292z"
     },
@@ -19,8 +19,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Orcamento.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/Logoamigo.png",
+        "versionCode": 2
       },
       "package": "com.guhxs.Orcamento"
     },
@@ -29,7 +29,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "a30dc63d-85f4-4912-9b7e-d964a2bca422"
+        "projectId": "b5b33ecc-e820-4738-aa3c-406994d438f0"
       }
     }
   }
