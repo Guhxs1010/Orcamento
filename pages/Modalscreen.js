@@ -39,29 +39,6 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
                     <View style={ESTILOS.inputsmodal}>
                         <TextInput
                             style={ESTILOS.inputModal}
-                            placeholder="Valor R$"
-                            onChangeText={(text) => {
-                                // Remove todos os caracteres que não são dígitos, ponto decimal ou vírgula
-                                const formattedText = text.replace(/[^0-9.,]/g, '');
-                                // Substitui vírgulas por pontos (se necessário)
-                                const textWithDot = formattedText.replace(/,/g, '.');
-                                // Atualiza o estado com o texto formatado
-                                setSelectedValor(textWithDot);
-                            }}
-                            value={selectedValor}
-                        />
-
-                        <TextInput
-                            style={ESTILOS.inputModal}
-                            placeholder="Quantidade"
-                            onChangeText={(text) => {
-                                const formattedText = text.replace(/[^0-9]/g, '');//para não aceitar letras
-                                setSelectedQuantidade(formattedText);
-                            }}
-                            value={selectedQuantidade}
-                        />
-                        <TextInput
-                            style={ESTILOS.inputModal}
                             placeholder="Produto"
                             onChangeText={(text) => {
                                 // Remove todos os caracteres que não são letras ou espaços
@@ -75,6 +52,31 @@ const ModalScreen = ({ modalVisible, setModalVisible, handleAddDataToList }) => 
                             maxLength={9} // Limita o número máximo de caracteres
                         />
 
+
+                        <TextInput
+                            style={ESTILOS.inputModal}
+                            placeholder="Quantidade ou KG"
+                            onChangeText={(text) => {
+                                const formattedText = text.replace(/[^0-9.,]/g, ''); // Aceita apenas dígitos, ponto decimal e vírgula
+                                const textWithDot = formattedText.replace(/,/g, '.'); // Substitui vírgulas por pontos, se necessário
+                                setSelectedQuantidade(textWithDot);
+                            }}
+                            value={selectedQuantidade}
+                        />
+
+                        <TextInput
+                            style={ESTILOS.inputModal}
+                            placeholder="Valor R$"
+                            onChangeText={(text) => {
+                                // Remove todos os caracteres que não são dígitos, ponto decimal ou vírgula
+                                const formattedText = text.replace(/[^0-9.,]/g, '');
+                                // Substitui vírgulas por pontos (se necessário)
+                                const textWithDot = formattedText.replace(/,/g, '.');
+                                // Atualiza o estado com o texto formatado
+                                setSelectedValor(textWithDot);
+                            }}
+                            value={selectedValor}
+                        />
                     </View>
                     <TouchableOpacity
                         style={ESTILOS.modalButton}
@@ -172,8 +174,8 @@ const ESTILOS = StyleSheet.create({
         width: '100%',
     },
     closebotao: {
-        alignItems:'flex-end',
-        justifyContent:'flex-end',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
         bottom: 45,
     },
     header: {

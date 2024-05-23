@@ -49,7 +49,7 @@ export default function TelaSucesso({ route }) {
                         onPress={() => navigation.navigate('index')}
                         style={styles.button}>
                         <Text style={styles.buttonText}>
-                            Voltar ao início
+                            Confirmar
                         </Text>
                     </TouchableOpacity>
                 </Animatable.View>
